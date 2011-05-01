@@ -26,4 +26,3 @@ import scala.collection.mutable.HashSet
 class Network() extends HashSet[NetworkElement]
 abstract class NetworkElement
 case class Node(id: Int, cost: Double) extends NetworkElement
-class NodeAlreadyExistsException extends Exception
