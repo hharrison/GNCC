@@ -13,17 +13,8 @@
  * http://www.gnu.org/licenses/.
  */
 
-package GNCC
+import sbt._
 
-object GNCC {
-  def main(args: Array[String]) {
-    println("Hello world")
-  }
+class GnccProjectConfig(info: ProjectInfo) extends DefaultProject(info) {
+  val scalatest = "org.scalatest" % "scalatest" % "1.3" % "compile"
 }
-
-import scala.collection.mutable.HashSet
-
-class Network() extends HashSet[NetworkElement]
-abstract class NetworkElement
-case class Node(id: Int, cost: Double) extends NetworkElement
-class NodeAlreadyExistsException extends Exception
