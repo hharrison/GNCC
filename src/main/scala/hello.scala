@@ -21,8 +21,12 @@ object GNCC {
   }
 }
 
-import scala.collection.mutable.HashSet
-
-class Network() extends HashSet[NetworkElement]
-abstract class NetworkElement
-case class Node(id: Int, cost: Double) extends NetworkElement
+// import scala.collection.mutable.HashSet
+// import scala.collection.Set
+// 
+// 
+// class HashMapNetwork extends HashMap[Int, NetworkElement] with Network {
+//   def getNode(id: Int): Node = {
+//     get(id)
+//   }
+// }

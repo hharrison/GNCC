@@ -2,6 +2,25 @@
 
 Simple demand assignment network calculator.
 
+# Example Syntax/API
+
+    1. Add Nodes
+    an 1000
+    an 1010
+    an 1020
+    2. Add Centroids
+    ac 1000
+    3. Add Links
+    al c1000 1010
+    al 1010 1020
+    4. Add Turns
+    at c1000 1010 1020
+    5. Delete Operations
+    dn 1000
+    dc 1000
+    dl c1000 1010
+    dt c1000 1010 1020
+
 # Installation
 
 * git clone the repo
