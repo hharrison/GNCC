@@ -15,15 +15,18 @@
 
 package GNCC
 
-object GNCC {
-  def main(args: Array[String]) {
-    println("Hello world")
+import org.scalatest.WordSpec
+import org.scalatest.matchers.ShouldMatchers
+
+class StackSpec extends WordSpec with ShouldMatchers {
+  "Within a network" should {
+    val network = new Network
+    "All elements should be unique, such as" should {
+      "node" in {
+        val node = Node(1, 1.0)
+        network.add(node) should equal (true)
+        network.add(node) should equal (false)
+      }
+    }
   }
 }
-
-import scala.collection.mutable.HashSet
-
-class Network() extends HashSet[NetworkElement]
-abstract class NetworkElement
-case class Node(id: Int, cost: Double) extends NetworkElement
-class NodeAlreadyExistsException extends Exception
