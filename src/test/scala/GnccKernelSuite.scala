@@ -26,7 +26,7 @@ case class Turn(iLink: Int, jLink: Int) extends NetworkElement
 object Network {
   object NetworkRet extends Enumeration {
     type Reason = Value
-    val Success, NodeExists, LinkExists, TurnExists, INodeMissing, JNodeMissing, KNodeMissing, ILinkMissing, JLinkMissing = Value
+    val Success, NodeExists, LinkExists, TurnExists, InvalidNodes, INodeMissing, JNodeMissing, KNodeMissing, ILinkMissing, JLinkMissing = Value
   }
 
   def create = new DefaultNetwork
@@ -51,6 +51,7 @@ class DefaultNetwork extends Network {
   import Network.NetworkRet._
 
   val nodes = new HashSet[Node]
+  val links = new HashSet[Link]
 
   def getNode(id: Int) = {
     nodes.findEntry(Node(id))
@@ -67,7 +68,10 @@ class DefaultNetwork extends Network {
     val nodes = (getNode(i), getNode(j))
     
     nodes match {
-      case (iN: Some[Node], jN: Some[Node]) => Success //do link stuff
+      case (Some(Node(i)), Some(Node(j))) => links.add(Link(i, j)) match { case true => { Success } case false => LinkExists }
+      case (None, None) => InvalidNodes
+      case (_, None) => JNodeMissing
+      case (None, _) => INodeMissing
       case _ => LinkExists
     }
   }
@@ -78,18 +82,21 @@ class StackSpec extends WordSpec with ShouldMatchers {
     val network = Network.create
     import Network.NetworkRet._
 
-     "Adding nodes is as simple as" should {
-       network.addNode(1) should be (Success)
-       network + 2 should be (Success)
-       network an 3 should be (Success)
-       network an 3 should be (NodeExists)
-       network an 1 should be (NodeExists)
-     }
-     "Adding links is as simple as" should {
+    "Adding nodes is as simple as" should {
+      network.addNode(1) should be (Success)
+      network + 2 should be (Success)
+      network an 3 should be (Success)
+      network an 3 should be (NodeExists)
+      network an 1 should be (NodeExists)
+    }
 
-       network.addLink(1, 2) should be (Success)
-       network.addLink(1, 2) should be (LinkExists)
-     }
+    "Adding links is as simple as" should {
+      network.addLink(1, 2) should be (Success)
+      network.addLink(1, 2) should be (LinkExists)
+      network.addLink(1,11) should be (JNodeMissing)
+      network.addLink(11,1) should be (INodeMissing)
+      network.addLink(11,11) should be (InvalidNodes)
+    }
   }
 }
 
