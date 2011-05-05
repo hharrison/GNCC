@@ -15,8 +15,11 @@
 
 package gncc
 
-object GNCC {
-  def main(args: Array[String]) {
-    println("Hello world")
+package object network {
+  object NetworkOperationStatus extends Enumeration {
+    type Reason = Value
+    val Success, NodeExists, LinkExists, TurnExists, InvalidNodes, INodeInvalid, JNodeInvalid, KNodeInvalid, ILinkInvalid, JLinkInvalid = Value
   }
 }
+
+ 
