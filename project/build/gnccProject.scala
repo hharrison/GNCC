@@ -16,7 +16,7 @@
 import sbt._
 
 class GnccProjectConfig(info: ProjectInfo) extends DefaultProject(info) {
-  val scalatest = "org.scalatest" % "scalatest" % "1.3" % "compile"
+  val scalatest = "org.scalatest" % "scalatest" % "1.3" % "test"
 
-  override def testCompileOptions = super.compileOptions ++ compileOptions("-unchecked")
+  override def testCompileOptions = super.compileOptions ++ compileOptions("-deprecation", "-unchecked")
 }
