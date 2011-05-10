@@ -21,6 +21,10 @@ Simple demand assignment network calculator.
     dl c1000 1010
     dt c1000 1010 1020
 
+## Notes
+
+* Centroids have their own namepsace, separate from nodes
+
 # Installation
 
 * git clone the repo
