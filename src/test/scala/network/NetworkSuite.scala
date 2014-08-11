@@ -29,6 +29,7 @@ class NetworkSuiteSpec extends WordSpec with ShouldMatchers {
         network.addNode(1) should be (Success)
         network + 2 should be (Success)
         network an 3 should be (Success)
+        network + 4 should be (Success)
       }
 
       "while they produce an error if you add an existing one" in {
@@ -40,9 +41,10 @@ class NetworkSuiteSpec extends WordSpec with ShouldMatchers {
       "links are easy to add" in {
         network.addLink(1, 2) should be (Success)
         network al (2, 3) should be (Success)
+        network + (4, 3) should be (Success)
       }
 
-      "but error when we add one that already exists" in {
+      "error when we add one that already exists" in {
         network.addLink(1, 2) should be (LinkExists)
       }
 
@@ -56,6 +58,28 @@ class NetworkSuiteSpec extends WordSpec with ShouldMatchers {
 
       "complain if both the nodes are invalid" in {
         network.addLink(11,11) should be (InvalidNodes)
+      }
+    }
+
+    "finally, atop links we can add turns" that {
+      "turns require three nodes" in {
+        network at(1,2,3) should be (Success)
+      }
+
+      "error when the first two nodes are not linked" in {
+        network at(1,4,3) should be (IJAreNotLinked)
+      }
+
+      "error when the second two nodes are not linked" in {
+        network at(1,2,4) should be (JKAreNotLinked)
+      }
+
+      "error when all nodes are invalid" in {
+        network at(1,3,4) should be (NoNodesAreLinked)
+      }
+
+      "error when we try to add the same turn over again" in {
+        network + (1,2,3) should be (TurnExists)
       }
     }
   }

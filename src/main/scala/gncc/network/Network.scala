@@ -31,6 +31,10 @@ trait Network {
   def al(i: Int, j: Int): Reason
   def addLink(i: Int, j: Int) = al(i, j)
   def +(i: Int, j: Int) = al(i, j)
+
+  def at(i: Int, j: Int, k: Int): Reason
+  def addTurn(i: Int, j: Int, k: Int) = at(i,j,k)
+  def +(i: Int, j: Int, k: Int) = at(i,j,k)
 }
 
 class DefaultNetwork extends Network {
@@ -39,9 +43,17 @@ class DefaultNetwork extends Network {
 
   val nodes = new HashSet[Node]
   val links = new HashSet[Link]
+  val turns = new HashSet[Turn]
 
   def getNode(id: Int) = {
     nodes.findEntry(Node(id))
+  }
+
+  def getLink(i: Int, j: Int): Option[Link] = {
+    links.findEntry(Link(i, j))
+  }
+  def getLink(i: Node, j: Node): Option[Link] = {
+    getLink(i.id, j.id)
   }
 
   def an(id: Int): Reason = {
@@ -63,6 +75,17 @@ class DefaultNetwork extends Network {
     }
   }
 
+  def at(i: Int, j: Int, k: Int): Reason = {
+    val turnLinks = (getLink(i, j), getLink(j, k))
+
+    turnLinks match {
+      case (Some(i), Some(j)) => if(turns.add(Turn(i, j))) Success else TurnExists
+      case (None, None) => NoNodesAreLinked
+      case (None, _) => IJAreNotLinked
+      case (_, None) => JKAreNotLinked
+    }
+  }
+
   // Currently using this for debugging
   override def toString = {
     "Nodes: " + nodes.toString + "Links: " + links.toString
@@ -72,4 +95,4 @@ class DefaultNetwork extends Network {
 abstract class NetworkElement
 case class Node(id: Int) extends NetworkElement
 case class Link(iNode: Int, jNode: Int) extends NetworkElement
-case class Turn(iLink: Int, jLink: Int) extends NetworkElement
+case class Turn(iLink: Link, jLink: Link) extends NetworkElement

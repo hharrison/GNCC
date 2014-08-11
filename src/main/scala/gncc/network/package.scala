@@ -18,7 +18,7 @@ package gncc
 package object network {
   object NetworkOperationStatus extends Enumeration {
     type Reason = Value
-    val Success, NodeExists, LinkExists, TurnExists, InvalidNodes, INodeInvalid, JNodeInvalid, KNodeInvalid, ILinkInvalid, JLinkInvalid = Value
+    val Success, NodeExists, LinkExists, TurnExists, InvalidNodes, INodeInvalid, JNodeInvalid, KNodeInvalid, IJAreNotLinked, JKAreNotLinked, NoNodesAreLinked = Value
   }
 }
 
